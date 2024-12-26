@@ -1,0 +1,8 @@
+---
+- import tasks: packages.yml
+- import tasks: messages.yml
+- name: Start nginx service
+  service:
+    name: nginx
+    state: started
+    enabled: yes

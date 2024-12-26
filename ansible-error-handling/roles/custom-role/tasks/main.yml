@@ -1,0 +1,22 @@
+---
+#1. ignore errors - ignore_errors: true
+- name: index.html copy with ignore error
+  template: src=index.html dest=/var/www/html/index.html
+  register: copy_result
+  ignore_errors: true
+
+#2. any_errors_fatal - put failed_when when error msg says - "Could not find or access"
+- name: index.html copy with failed when
+  template: src=index.html dest=/var/www/html/index.html
+  failed_when: 
+    - '"Could not find or access" in copy_result.msg'
+    - copy_result.failed == true
+#  any_errors_fatal: true
+  any_errors_fatal: false
+
+#
+- name: Create a file if it doesn't exist
+  command: touch /var/www/html/index.html
+  register: touch_result
+  changed_when: touch_result.rc == 0
+  

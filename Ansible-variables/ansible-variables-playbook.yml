@@ -1,0 +1,112 @@
+---
+- name: Example ansible playbook
+  hosts: all
+  become: yes
+  remote_user: ubuntu
+  roles:
+
+  vars:
+    # 1. String Variable
+    main_playbook_string: "This is a string variable"
+
+    # 2. Boolean Variable
+    is_enabled: true
+
+    # 3. List Variable
+    fruits:
+      - Apple
+      - Banana
+      - Orange
+
+    # 4. Dictionary Variable
+    fruit_prices:
+      Apple: 100
+      Banana: 50
+      Orange: 80
+
+    # 5. Nested Dictionary Variable
+    fruit_basket:
+      - name: John
+        fruits:
+          - Apple
+          - Banana
+      - name: Doe
+        fruits:
+          - Orange
+          - Mango
+
+    # 6. Variable from vars_files
+    vars_files:
+      - vars.yml
+
+  tasks:
+    - name: String variable from - main playbook
+      debug:
+        var: main_playbook_string
+
+    - name: Boolean variable from - main playbook
+      debug:
+        msg: value of is_enabled is "{{ is_enabled }}"
+
+    - name: Conditional statement
+      debug:
+        msg: "variable is enabled"
+        when: is_enabled
+
+    - name: List variable from - main playbook
+      debug:
+        var: fruits
+
+    - name: Looping through list variable
+      debug:
+        msg: "{{ item }}"
+      with_items: "{{ fruits }}"
+
+    - name: Accessing list variable using index
+      debug:
+        var: fruits[1]
+        msg: "Second fruit is {{ fruits[1] }}"
+
+    - name: Dictionary variable from - main playbook
+      debug:
+        var: fruit_prices
+
+    - name: Accessing dictionary variable using key
+      debug:
+        msg: "Price of Apple is {{ fruit_prices['Apple'] }}"
+        var: fruit_prices.Apple
+
+    - name: Get the price of Banana in to register variable
+      debug:
+        var: fruit_prices.Banana
+        # Register the price of Banana into banana_price variable
+        register: banana_price
+
+    - name: Print the price of Banana from register variable into stdout
+      debug:
+        var: banana_price.stdout
+
+    - name: Nested dictionary variable from - main playbook
+      debug:
+        var: fruit_prices[fruit_basket[0].fruits[0]]
+    
+    # Jinja2 filter on variable
+    - name: Jinja2 filter on variable
+      debug:
+        msg: "Fruit basket of John: {{ fruit_basket[0].fruits | join(', ') }}"  
+        var: fruit_basket.keys() | list | map('upper') | list
+
+    # Accessing variable from vars_files
+    - name: Get the value of variable from vars_files
+      debug:
+        var: variable_from_vars_files
+
+    # Defining and accessing the variable at runtime
+    - name: Defining and accessing the variable at runtime
+      debug:
+        var: version
+
+    # Defining and accessing the variable at runtime
+    - name: Print the value of variable when var file is passed at runtime
+      debug:
+        var: variable_from_vars_files

@@ -1,0 +1,13 @@
+---
+- name: Example ansible playbook for handlers
+  hosts: all
+  become: yes
+  remote_user: ubuntu
+  roles:
+    - handlers
+
+  handlers:
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted

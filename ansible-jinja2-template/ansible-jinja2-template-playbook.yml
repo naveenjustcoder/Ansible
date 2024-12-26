@@ -1,0 +1,7 @@
+---
+- name: Example playbook
+  hosts: all
+  become: yes
+  remote_user: ubuntu
+  roles:
+    - install-lighttpd

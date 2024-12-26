@@ -1,0 +1,9 @@
+---
+- name: Install required packages
+  apt:
+    name:
+      - git
+      - nginx
+      - curl
+    state: latest
+    update_cache: yes

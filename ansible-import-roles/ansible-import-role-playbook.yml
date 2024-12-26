@@ -1,0 +1,8 @@
+---
+- name: Example ansible playbook
+  hosts: all
+  become: yes
+  remote_user: ubuntu
+  roles:
+    - custom-role
+    - install-apache2
